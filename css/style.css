@@ -1,0 +1,22 @@
+.row {
+
+  text-align: center;
+
+}
+
+#category_right, #category_left {
+  margin-top: 12%;
+}
+
+#word {
+  margin-top: 10%;
+}
+
+#timer {
+  display: none;
+  text-align: left;
+}
+
+#subcategory_right, #subcategory_left {
+  color: #537310;
+}
