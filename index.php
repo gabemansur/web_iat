@@ -59,7 +59,7 @@
 
     <div class="row">
       <div id="timer" class="col-lg-6 col-lg-offset-4">
-        <h1>Time:</h1>
+        <h1>Response Time:</h1>
         <h1 id="time"></h1>
       </div>
     </div>

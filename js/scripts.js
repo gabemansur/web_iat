@@ -1,13 +1,12 @@
 $(document).ready(function(){
 
-	/**
+	/*
 	* On page load, load the categories and word list,
 	* and initialize all variables.
-	*
 	*/
-
 	categories = getCategories();
-	word_list = getWordlist();
+	word_list = getWordList();
+	console.log(word_list);
 
 	/*
 	* round and count are used as array indices
@@ -20,13 +19,11 @@ $(document).ready(function(){
 	var count = -1;
 	var timer = new Array();
 
-	// Display the categories of the first round
-	//$("#category_left").html(categories[round]['left']);
-	//$("#category_right").html(categories[round]['right']);
+	// Show the initial starting screen
 	showStart();
 
 	/**
-	* Pressing the space bar will advance the task by
+	* Pressing the space bar will advance the task by:
 	* 	- showing the next word;
 	*		- moving to the next category;
 	* 	- displaying the time for the completed category;
@@ -43,7 +40,7 @@ $(document).ready(function(){
 			showEnd();
 			round = 0;
 			categories = getCategories();
-			word_list = getWordlist();
+			word_list = getWordList();
 			return;
 		}
 
@@ -69,6 +66,7 @@ $(document).ready(function(){
 			return;
 		}
 
+		// Otherwise, show the next word in the round
 		else {
 			showWord(count, round);
 		}
@@ -82,13 +80,17 @@ $(document).ready(function(){
 function showCategories(categories, round)
 {
 	$("#category_left").html(categories[round]['left']);
+	$("#category_left").attr('class', categories[round]['color']);
 	$("#category_right").html(categories[round]['right']);
+	$("#category_right").attr('class', categories[round]['color']);
 
 	if(categories[round]['sub_left'] != undefined){
 		$("#subcategory_left").html(categories[round]['sub_left']);
+		$("#subcategory_left").attr('class', categories[round]['sub_color']);
 	}
 	if(categories[round]['sub_right'] != undefined){
 		$("#subcategory_right").html(categories[round]['sub_right']);
+		$("#subcategory_right").attr('class', categories[round]['sub_color']);
 	}
 }
 
@@ -102,7 +104,10 @@ function clearCategories()
 
 function showWord(count, round)
 {
-	$("#word").html(word_list[round][count]);
+	word = word_list[round][count][0];
+	color = word_list[round][count][1];
+	$("#word").html(word);
+	$("#word").attr('class', color);
 }
 
 function showTime(round, timer)
@@ -126,7 +131,7 @@ function showStart()
 function showEnd()
 {
 	clearCategories();
-	$("#word").html('The End -- Thank You!');
+	$("#word").html('End of Test');
 }
 
 function getCategories()
@@ -135,139 +140,146 @@ function getCategories()
 	return {
 						0: {
 									left: 'Male',
-									right: 'Female'
+									right: 'Female',
+									color: 'black'
 								},
 
 						1: {
 									left: 'Career',
-									right: 'Home'
+									right: 'Home',
+									color: 'green'
 								},
 
 						2: {
 									left: 'Male',
 									right: 'Female',
+									color: 'black',
 									sub_left: 'Career',
-									sub_right: 'Home'
+									sub_right: 'Home',
+									sub_color: 'green'
 							 },
 
 					 	3: {
 									left: 'Female',
-									right: 'Male'
+									right: 'Male',
+									color: 'black'
 								},
 
 
 						4: {
 									left: 'Female',
 									right: 'Male',
+									color: 'black',
 									sub_left: 'Career',
-									sub_right: 'Home'
+									sub_right: 'Home',
+									sub_color: 'green'
 							 }
 
 					};
 }
 
-function getWordlist()
+function getWordList()
 {
 
 		word_list = [
 
 			[
-				"Michelle",
-				"Jeffrey",
-				"Daniel ",
-				"John",
-				"Julia",
-				"Emily",
-				"Paul ",
-				"Anna",
-				"Ben",
-				"Rebecca",
-				"Barbara",
-				"John"
+				["Michelle", "black"],
+				["Jeffrey", "black"],
+				["Daniel", "black"],
+				["John", "black"],
+				["Julia", "black"],
+				["Emily", "black"],
+				["Paul", "black"],
+				["Anna", "black"],
+				["Ben", "black"],
+				["Rebecca", "black"],
+				["Barbara", "black"],
+				["John", "black"]
 			],
 
 			[
-				"Office",
-				"Family",
-				"Professional",
-				"Salary",
-				"Children",
-				"Laundry",
-				"Business",
-				"Marriage",
-				"Corporation",
-				"Cooking",
-				"Career",
-				"Parents"
+				["Office", "green"],
+				["Family", "green"],
+				["Professional", "green"],
+				["Salary", "green"],
+				["Children", "green"],
+				["Laundry", "green"],
+				["Business", "green"],
+				["Marriage", "green"],
+				["Corporation", "green"],
+				["Cooking", "green"],
+				["Career", "green"],
+				["Parents", "green"]
 			],
 
 			[
-				"Michelle",
-				"Jeffrey",
-				"Daniel ",
-				"John",
-				"Julia",
-				"Emily",
-				"Paul ",
-				"Anna",
-				"Ben",
-				"Rebecca",
-				"Barbara",
-				"John",
-				"Office",
-				"Family",
-				"Professional",
-				"Salary",
-				"Children",
-				"Laundry",
-				"Business",
-				"Marriage",
-				"Corporation",
-				"Cooking",
-				"Career",
-				"Parents"
+				["Michelle", "black"],
+				["Jeffrey", "black"],
+				["Daniel ", "black"],
+				["John", "black"],
+				["Julia", "black"],
+				["Emily", "black"],
+				["Paul", "black"],
+				["Anna", "black"],
+				["Ben", "black"],
+				["Rebecca", "black"],
+				["Barbara", "black"],
+				["John", "black"],
+				["Office", "green"],
+				["Family", "green"],
+				["Professional", "green"],
+				["Salary", "green"],
+				["Children", "green"],
+				["Laundry", "green"],
+				["Business", "green"],
+				["Marriage", "green"],
+				["Corporation", "green"],
+				["Cooking", "green"],
+				["Career", "green"],
+				["Parents", "green"]
 			],
 
 			[
-				"Michelle",
-				"Jeffrey",
-				"Daniel ",
-				"John",
-				"Julia",
-				"Emily",
-				"Paul ",
-				"Anna",
-				"Ben",
-				"Rebecca",
-				"Barbara",
-				"John"
+				["Michelle", "black"],
+				["Jeffrey", "black"],
+				["Daniel", "black"],
+				["John", "black"],
+				["Julia", "black"],
+				["Emily", "black"],
+				["Paul", "black"],
+				["Anna", "black"],
+				["Ben", "black"],
+				["Rebecca", "black"],
+				["Barbara", "black"],
+				["John", "black"]
 			],
 
 			[
-				"Michelle",
-				"Jeffrey",
-				"Daniel ",
-				"John",
-				"Julia",
-				"Emily",
-				"Paul ",
-				"Anna",
-				"Ben",
-				"Rebecca",
-				"Barbara",
-				"John",
-				"Office",
-				"Family",
-				"Professional",
-				"Salary",
-				"Children",
-				"Laundry",
-				"Business",
-				"Marriage",
-				"Corporation",
-				"Cooking",
-				"Career",
-				"Parents"
+				["Michelle", "black"],
+				["Jeffrey", "black"],
+				["Daniel ", "black"],
+				["John", "black"],
+				["Julia", "black"],
+				["Emily", "black"],
+				["Paul", "black"],
+				["Anna", "black"],
+				["Ben", "black"],
+				["Rebecca", "black"],
+				["Barbara", "black"],
+				["John", "black"],
+				["Office", "green"],
+				["Family", "green"],
+				["Professional", "green"],
+				["Salary", "green"],
+				["Children", "green"],
+				["Laundry", "green"],
+				["Business", "green"],
+				["Marriage", "green"],
+				["Corporation", "green"],
+				["Cooking", "green"],
+				["Career", "green"],
+				["Parents", "green"]
 			]
 		];
 
@@ -275,6 +287,7 @@ function getWordlist()
 	$.each(word_list, function() { fisherYates(this) });
 	return word_list;
 }
+
 
 /**
 * Randomizes an array
