@@ -54,6 +54,7 @@ $(document).ready(function(){
 		if(count == -1){
 			showCategories(categories, round);
 			$("#word").html('');
+			$("#img").hide();
 			count++;
 			return;
 		}
@@ -124,13 +125,14 @@ function showWord(count, round)
 
 	if(word_list[round][count][0].type == 'img'){
 		$("#img").attr('src', word);
+		$("#img").show();
 		$("#word").html('');
 	}
 
 	else {
 		$("#word").html(word);
 		$("#word").attr('class', color);
-		$("#img").attr('src', '');
+		$("#img").hide();
 	}
 
 }
@@ -141,6 +143,7 @@ function showTime(round, timer)
 
 	$("#word").html('');
 	$("#img").attr('src', '');
+	$("#img").hide();
 
 	$("#timer").show();
 	end_time = Date.now();
