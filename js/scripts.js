@@ -1,12 +1,18 @@
 $(document).ready(function(){
 
 	/*
-	* On page load, load the categories and word list,
-	* and initialize all variables.
+	* On page load, get the version (to determine which words and
+	* categories to load) from the URL, load the categories
+	* and word list, and initialize all variables.
 	*/
-	categories = getCategories();
-	word_list = getWordList();
-	console.log(word_list);
+
+	var urlParams = new URLSearchParams(window.location.search);
+	var version = urlParams.get('v');
+	var is_random = urlParams.get('rand');
+	if(!version) version = 2; // Default to v2 if no version present
+	if(!is_random) is_random = false; // Default to no randomization
+	categories = getCategories(version);
+	word_list = getWordList(version);
 
 	/*
 	* round and count are used as array indices
@@ -39,8 +45,8 @@ $(document).ready(function(){
 		if(word_list[round] == undefined){
 			showEnd();
 			round = 0;
-			categories = getCategories();
-			word_list = getWordList();
+			categories = getCategories(version);
+			word_list = getWordList(version, is_random);
 			return;
 		}
 
@@ -87,10 +93,16 @@ function showCategories(categories, round)
 	if(categories[round]['sub_left'] != undefined){
 		$("#subcategory_left").html(categories[round]['sub_left']);
 		$("#subcategory_left").attr('class', categories[round]['sub_color']);
+		if(categories[round]['separator'] != undefined){
+			$("#separator_left").html(categories[round]['separator']);
+		}
 	}
 	if(categories[round]['sub_right'] != undefined){
 		$("#subcategory_right").html(categories[round]['sub_right']);
 		$("#subcategory_right").attr('class', categories[round]['sub_color']);
+		if(categories[round]['separator'] != undefined){
+			$("#separator_right").html(categories[round]['separator']);
+		}
 	}
 }
 
@@ -100,14 +112,27 @@ function clearCategories()
 	$("#category_right").html('');
 	$("#subcategory_left").html('');
 	$("#subcategory_right").html('');
+	$("#separator_left").html('');
+	$("#separator_right").html('');
 }
 
 function showWord(count, round)
 {
-	word = word_list[round][count][0];
+
+	word = word_list[round][count][0].val;
 	color = word_list[round][count][1];
-	$("#word").html(word);
-	$("#word").attr('class', color);
+
+	if(word_list[round][count][0].type == 'img'){
+		$("#img").attr('src', word);
+		$("#word").html('');
+	}
+
+	else {
+		$("#word").html(word);
+		$("#word").attr('class', color);
+		$("#img").attr('src', '');
+	}
+
 }
 
 function showTime(round, timer)
@@ -115,6 +140,7 @@ function showTime(round, timer)
 	clearCategories();
 
 	$("#word").html('');
+	$("#img").attr('src', '');
 
 	$("#timer").show();
 	end_time = Date.now();
@@ -134,157 +160,44 @@ function showEnd()
 	$("#word").html('End of Test');
 }
 
-function getCategories()
+function getCategories(version)
 {
 
-	return {
-						0: {
-									left: 'Male',
-									right: 'Female',
-									color: 'black'
-								},
+	var cat;
+	switch (version) {
+		case "1":
+			cat = categories_gender;
+			break;
 
-						1: {
-									left: 'Career',
-									right: 'Home',
-									color: 'green'
-								},
+		case "2":
+		default:
+			cat = categories_ability;
+			break;
+	}
 
-						2: {
-									left: 'Male',
-									right: 'Female',
-									color: 'black',
-									sub_left: 'Career',
-									sub_right: 'Home',
-									sub_color: 'green'
-							 },
-
-					 	3: {
-									left: 'Female',
-									right: 'Male',
-									color: 'black'
-								},
-
-
-						4: {
-									left: 'Female',
-									right: 'Male',
-									color: 'black',
-									sub_left: 'Career',
-									sub_right: 'Home',
-									sub_color: 'green'
-							 }
-
-					};
+	return cat;
 }
 
-function getWordList()
+function getWordList(version, is_random)
 {
 
-		word_list = [
+	var word_list;
+	switch (version) {
+		case "1":
+			word_list = word_list_gender;
+			break;
 
-			[
-				["Michelle", "black"],
-				["Jeffrey", "black"],
-				["Daniel", "black"],
-				["John", "black"],
-				["Julia", "black"],
-				["Emily", "black"],
-				["Paul", "black"],
-				["Anna", "black"],
-				["Ben", "black"],
-				["Rebecca", "black"],
-				["Barbara", "black"],
-				["John", "black"]
-			],
+		case "2":
+		default:
+			word_list = word_list_ability;
+			break;
+	}
 
-			[
-				["Office", "green"],
-				["Family", "green"],
-				["Professional", "green"],
-				["Salary", "green"],
-				["Children", "green"],
-				["Laundry", "green"],
-				["Business", "green"],
-				["Marriage", "green"],
-				["Corporation", "green"],
-				["Cooking", "green"],
-				["Career", "green"],
-				["Parents", "green"]
-			],
+	if(is_random)
+	{
+		$.each(word_list, function() { fisherYates(this) });
+	}
 
-			[
-				["Michelle", "black"],
-				["Jeffrey", "black"],
-				["Daniel ", "black"],
-				["John", "black"],
-				["Julia", "black"],
-				["Emily", "black"],
-				["Paul", "black"],
-				["Anna", "black"],
-				["Ben", "black"],
-				["Rebecca", "black"],
-				["Barbara", "black"],
-				["John", "black"],
-				["Office", "green"],
-				["Family", "green"],
-				["Professional", "green"],
-				["Salary", "green"],
-				["Children", "green"],
-				["Laundry", "green"],
-				["Business", "green"],
-				["Marriage", "green"],
-				["Corporation", "green"],
-				["Cooking", "green"],
-				["Career", "green"],
-				["Parents", "green"]
-			],
-
-			[
-				["Michelle", "black"],
-				["Jeffrey", "black"],
-				["Daniel", "black"],
-				["John", "black"],
-				["Julia", "black"],
-				["Emily", "black"],
-				["Paul", "black"],
-				["Anna", "black"],
-				["Ben", "black"],
-				["Rebecca", "black"],
-				["Barbara", "black"],
-				["John", "black"]
-			],
-
-			[
-				["Michelle", "black"],
-				["Jeffrey", "black"],
-				["Daniel ", "black"],
-				["John", "black"],
-				["Julia", "black"],
-				["Emily", "black"],
-				["Paul", "black"],
-				["Anna", "black"],
-				["Ben", "black"],
-				["Rebecca", "black"],
-				["Barbara", "black"],
-				["John", "black"],
-				["Office", "green"],
-				["Family", "green"],
-				["Professional", "green"],
-				["Salary", "green"],
-				["Children", "green"],
-				["Laundry", "green"],
-				["Business", "green"],
-				["Marriage", "green"],
-				["Corporation", "green"],
-				["Cooking", "green"],
-				["Career", "green"],
-				["Parents", "green"]
-			]
-		];
-
-
-	$.each(word_list, function() { fisherYates(this) });
 	return word_list;
 }
 
